@@ -8,6 +8,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+
 @WebServlet("")
 public class HomeServlet extends HttpServlet {
 
@@ -78,139 +79,69 @@ public class HomeServlet extends HttpServlet {
         out.println("        .main-content {");
         out.println("            margin-left: var(--sidebar-width);");
         out.println("            flex: 1;");
-        out.println("            padding: 30px;");
+        out.println("            padding: 0;");
         out.println("        }");
-        out.println("        .dashboard-header {");
-        out.println("            margin-bottom: 30px;");
+        out.println("        #content-frame {");
+        out.println("            width: 100%;");
+        out.println("            height: 100vh;");
+        out.println("            border: none;");
         out.println("        }");
-        out.println("        .dashboard-cards {");
-        out.println("            display: grid;");
-        out.println("            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));");
-        out.println("            gap: 20px;");
-        out.println("        }");
-        out.println("        .card {");
-        out.println("            background-color: white;");
-        out.println("            border-radius: 8px;");
-        out.println("            padding: 20px;");
-        out.println("            box-shadow: 0 2px 10px rgba(0,0,0,0.1);");
-        out.println("        }");
-        out.println("        .card-header {");
-        out.println("            display: flex;");
-        out.println("            justify-content: space-between;");
-        out.println("            align-items: center;");
-        out.println("            margin-bottom: 15px;");
-        out.println("        }");
-        out.println("        .card-title {");
-        out.println("            font-size: 1.2rem;");
-        out.println("            color: var(--dark-color);");
-        out.println("        }");
-        out.println("        .card-icon {");
-        out.println("            font-size: 1.5rem;");
-        out.println("        }");
-        out.println("        .card-body {");
-        out.println("            color: #7f8c8d;");
-        out.println("        }");
-        out.println("        .btn {");
-        out.println("            display: inline-block;");
-        out.println("            padding: 8px 15px;");
-        out.println("            border-radius: 4px;");
-        out.println("            text-decoration: none;");
-        out.println("            margin-top: 10px;");
-        out.println("            font-weight: 500;");
-        out.println("            transition: all 0.3s;");
-        out.println("        }");
-        out.println("        .btn-primary {");
-        out.println("            background-color: var(--primary-color);");
-        out.println("            color: white;");
-        out.println("        }");
-        out.println("        .btn-primary:hover {");
-        out.println("            background-color: #2980b9;");
+        out.println("        .active {");
+        out.println("            background-color: rgba(255,255,255,0.2);");
         out.println("        }");
         out.println("    </style>");
-        out.println(
-                "    <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css'>");
+        out.println("    <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css'>");
+        out.println("    <script>");
+        out.println("        function loadContent(url) {");
+        out.println("            document.getElementById('content-frame').src = url;");
+        out.println("            // Mise à jour de l'élément actif");
+        out.println("            document.querySelectorAll('.nav-item').forEach(item => {");
+        out.println("                item.classList.remove('active');");
+        out.println("            });");
+        out.println("            event.currentTarget.parentElement.classList.add('active');");
+        out.println("        }");
+        out.println("    </script>");
         out.println("</head>");
         out.println("<body>");
-
+        
         // Sidebar Navigation
         out.println("<div class='sidebar'>");
         out.println("    <div class='sidebar-header'>");
         out.println("        <h2>Gestion de Stock</h2>");
         out.println("    </div>");
         out.println("    <nav class='sidebar-nav'>");
-        out.println("        <div class='nav-item'>");
-        out.println("            <a href='" + req.getContextPath() + "/'>");
+        out.println("        <div class='nav-item active'>");
+        out.println("            <a href='javascript:void(0)' onclick=\"loadContent('" + req.getContextPath() + "/dashboard')\">");
         out.println("                <i class='fas fa-home'></i>");
         out.println("                <span>Tableau de bord</span>");
         out.println("            </a>");
         out.println("        </div>");
         out.println("        <div class='nav-item'>");
-        out.println("            <a href='" + req.getContextPath() + "/marques'>");
+        out.println("            <a href='javascript:void(0)' onclick=\"loadContent('" + req.getContextPath() + "/marques')\">");
         out.println("                <i class='fas fa-tags'></i>");
         out.println("                <span>Marques</span>");
         out.println("            </a>");
         out.println("        </div>");
         out.println("        <div class='nav-item'>");
-        out.println("            <a href='" + req.getContextPath() + "/produits'>");
+        out.println("            <a href='javascript:void(0)' onclick=\"loadContent('" + req.getContextPath() + "/produits')\">");
         out.println("                <i class='fas fa-box-open'></i>");
         out.println("                <span>Produits</span>");
         out.println("            </a>");
         out.println("        </div>");
         out.println("        <div class='nav-item'>");
-        out.println("            <a href='" + req.getContextPath() + "/stocks'>");
+        out.println("            <a href='javascript:void(0)' onclick=\"loadContent('" + req.getContextPath() + "/stocks')\">");
         out.println("                <i class='fas fa-warehouse'></i>");
         out.println("                <span>Stocks</span>");
         out.println("            </a>");
         out.println("        </div>");
         out.println("    </nav>");
         out.println("</div>");
-
-        // Main Content
+        
+        // Main Content Area with iframe
         out.println("<div class='main-content'>");
-        out.println("    <div class='dashboard-header'>");
-        out.println("        <h1>Tableau de bord</h1>");
-        out.println("        <p>Bienvenue dans votre application de gestion de stock</p>");
-        out.println("    </div>");
-
-        out.println("    <div class='dashboard-cards'>");
-        out.println("        <div class='card'>");
-        out.println("            <div class='card-header'>");
-        out.println("                <h3 class='card-title'>Marques</h3>");
-        out.println("                <i class='fas fa-tags card-icon'></i>");
-        out.println("            </div>");
-        out.println("            <div class='card-body'>");
-        out.println("                <p>Gérez les marques de vos produits</p>");
-        out.println(
-                "                <a href='" + req.getContextPath() + "/marques' class='btn btn-primary'>Accéder</a>");
-        out.println("            </div>");
-        out.println("        </div>");
-
-        out.println("        <div class='card'>");
-        out.println("            <div class='card-header'>");
-        out.println("                <h3 class='card-title'>Produits</h3>");
-        out.println("                <i class='fas fa-box-open card-icon'></i>");
-        out.println("            </div>");
-        out.println("            <div class='card-body'>");
-        out.println("                <p>Gérez votre catalogue de produits</p>");
-        out.println(
-                "                <a href='" + req.getContextPath() + "/produits' class='btn btn-primary'>Accéder</a>");
-        out.println("            </div>");
-        out.println("        </div>");
-
-        out.println("        <div class='card'>");
-        out.println("            <div class='card-header'>");
-        out.println("                <h3 class='card-title'>Stocks</h3>");
-        out.println("                <i class='fas fa-warehouse card-icon'></i>");
-        out.println("            </div>");
-        out.println("            <div class='card-body'>");
-        out.println("                <p>Suivez et gérez vos niveaux de stock</p>");
-        out.println(
-                "                <a href='" + req.getContextPath() + "/stocks' class='btn btn-primary'>Accéder</a>");
-        out.println("            </div>");
-        out.println("        </div>");
-        out.println("    </div>");
+        out.println("    <iframe id='content-frame' src='" + req.getContextPath() + "/dashboard'></iframe>");
         out.println("</div>");
-
+        
         out.println("</body>");
         out.println("</html>");
     }
